@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { CorsConfig, OpenApiConfig } from './shared/config';
 import { ServerConfig } from './shared/config/server.config';
+import { PaginatedResDto } from './shared/dto/paginated.res.dto';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -37,7 +38,9 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
 
-  const sgDocs = SwaggerModule.createDocument(app, apiDocs);
+  const sgDocs = SwaggerModule.createDocument(app, apiDocs, {
+    extraModels: [PaginatedResDto],
+  });
   SwaggerModule.setup(oaConfig.path, app, sgDocs);
   const serverConfig = confService.get<ServerConfig>('server');
 

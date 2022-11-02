@@ -18,6 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { User } from 'src/database/entities';
+import { ApiPaginatedResponse } from 'src/shared/decors';
 import { OkResDto } from 'src/shared/dto/ok.res.dto';
 import { PaginatedResDto } from 'src/shared/dto/paginated.res.dto';
 import { str } from 'src/shared/utils';
@@ -45,7 +46,7 @@ export class UserController {
   }
 
   @Get('filter')
-  @ApiOkResponse({ type: PaginatedResDto<User> })
+  @ApiPaginatedResponse(User)
   @ApiOperation({ summary: 'Filter users with pagination' })
   async filter(
     @Query() data: AdminFilterUserReqDto,
