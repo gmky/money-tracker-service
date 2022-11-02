@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { genSaltSync, hash, hashSync } from 'bcrypt';
+import { genSaltSync, hashSync } from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import {
   IsAlpha,

@@ -7,7 +7,6 @@ import {
 import { instanceToPlain } from 'class-transformer';
 import { User } from 'src/database/entities';
 import { UserRepo } from 'src/database/repository/user.repo';
-import { str } from 'src/shared/utils';
 import { AdminCreateUserReqDto } from '../dto/req';
 import { AdminUpdateUserReqDto } from '../dto/req/update-user.req.dto';
 
