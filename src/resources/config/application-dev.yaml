@@ -8,8 +8,8 @@ database:
   host: localhost
   port: 3306
   name: mt
-  user: mt
-  pass: b15dcpt082
+  user: root
+  password: b15dcpt082
 
 security:
   cors:
@@ -20,7 +20,7 @@ security:
     credentials: true
     maxAge: 1800
   jwt:
-    base64Secret: ''
+    base64Secret: 'YXMyOTNPYXNrZEpIMTIzMWxqYXNrbGpLSlNBREgK'
     tokenValidityInSeconds: 1800
 
 redis:

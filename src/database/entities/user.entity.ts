@@ -1,4 +1,6 @@
-import { hashSync } from 'bcrypt';
+import { ApiProperty } from '@nestjs/swagger';
+import { genSaltSync, hash, hashSync } from 'bcrypt';
+import { Exclude } from 'class-transformer';
 import { UserStatusEnum } from 'src/shared/enum/user-status.enum';
 import {
   BeforeInsert,
@@ -12,41 +14,56 @@ import {
 
 @Entity()
 export class User {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 255 })
+  @ApiProperty()
+  @Column({ length: 255, unique: true })
   username: string;
 
+  @ApiProperty()
+  @Column({ length: 255, unique: true })
+  email: string;
+
+  @Exclude({ toPlainOnly: true })
   @Column()
   password: string;
 
+  @ApiProperty()
   @Column({ length: 50 })
   firstName: string;
 
+  @ApiProperty()
   @Column({ length: 50 })
   lastName: string;
 
-  @Column({ length: 12 })
+  @ApiProperty()
+  @Column({ length: 12, default: UserStatusEnum.ACTIVE })
   status: UserStatusEnum;
 
+  @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Exclude()
   isPasswordChanged = false;
 
   @BeforeInsert()
-  beforeInsert(): void {
-    this.password = hashSync(this.password, 10);
+  async beforeInsert(): Promise<void> {
+    const salt = genSaltSync();
+    this.password = hashSync(this.password, salt);
   }
 
   @BeforeUpdate()
   beforeUpdate(): void {
     if (this.isPasswordChanged) {
-      this.password = hashSync(this.password, 10);
+      const salt = genSaltSync();
+      this.password = hashSync(this.password, salt);
     }
   }
 }

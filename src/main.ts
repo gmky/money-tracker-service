@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { CorsConfig, OpenApiConfig } from './shared/config';
 import { ServerConfig } from './shared/config/server.config';
+import { OkResDto } from './shared/dto/ok.res.dto';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
