@@ -10,8 +10,8 @@ import { compareSync } from 'bcrypt';
 import { instanceToPlain } from 'class-transformer';
 import { User } from 'src/database/entities';
 import { UserRepo } from 'src/database/repository/user.repo';
-import { RegisterReqDto } from './req/register.dto';
-import { LoginResDto } from './res';
+import { RegisterReqDto } from './dto/req/register.dto';
+import { LoginResDto } from './dto/res';
 
 @Injectable()
 export class AuthService {
@@ -41,7 +41,7 @@ export class AuthService {
   }
 
   async register(dto: RegisterReqDto): Promise<Partial<User>> {
-    const existed = await this.userRepo.findOneByUsername(dto.username);
+    const existed = await this.userRepo.findByUsername(dto.username);
     if (existed) throw new BadRequestException('User already existed');
     const result = await this.userRepo.save(dto as User);
     return instanceToPlain(result);

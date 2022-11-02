@@ -34,6 +34,6 @@ openapi:
   path: api-docs
   title: Money Tracker API Docs
   description: The Money Tracker API Docs
-  version: 1.0
+  version: '1.0.0'
 
 application:

@@ -1,12 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { genSaltSync, hash, hashSync } from 'bcrypt';
 import { Exclude } from 'class-transformer';
+import {
+  IsAlpha,
+  IsAlphanumeric,
+  IsEmail,
+  IsEnum,
+  IsString,
+} from 'class-validator';
 import { UserStatusEnum } from 'src/shared/enum/user-status.enum';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -19,26 +27,32 @@ export class User {
   id: number;
 
   @ApiProperty()
+  @IsAlphanumeric()
   @Column({ length: 255, unique: true })
   username: string;
 
   @ApiProperty()
+  @IsEmail()
   @Column({ length: 255, unique: true })
   email: string;
 
-  @Exclude({ toPlainOnly: true })
   @Column()
+  @IsString()
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @ApiProperty()
+  @IsAlpha()
   @Column({ length: 50 })
   firstName: string;
 
   @ApiProperty()
+  @IsAlpha()
   @Column({ length: 50 })
   lastName: string;
 
   @ApiProperty()
+  @IsEnum(UserStatusEnum)
   @Column({ length: 12, default: UserStatusEnum.ACTIVE })
   status: UserStatusEnum;
 
@@ -49,6 +63,10 @@ export class User {
   @ApiProperty()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ApiProperty()
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @Exclude()
   isPasswordChanged = false;

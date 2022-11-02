@@ -14,7 +14,7 @@ export class UserRepo {
     return this.users.findOneBy({ username, status: UserStatusEnum.ACTIVE });
   }
 
-  findOneByUsername(username: string): Promise<User> {
+  findByUsername(username: string): Promise<User> {
     return this.users.findOneBy({ username });
   }
 
@@ -29,5 +29,15 @@ export class UserRepo {
   save(user: User): Promise<User> {
     const entity = this.users.create(user);
     return this.users.save(entity);
+  }
+
+  softDelete(id: number): Promise<void> {
+    this.users.softDelete({ id });
+    return;
+  }
+
+  forceDelete(id: number): Promise<void> {
+    this.users.delete({ id });
+    return;
   }
 }
