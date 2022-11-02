@@ -7,7 +7,9 @@ import {
 import { instanceToPlain } from 'class-transformer';
 import { User } from 'src/database/entities';
 import { UserRepo } from 'src/database/repository/user.repo';
+import { PaginatedResDto } from 'src/shared/dto/paginated.res.dto';
 import { AdminCreateUserReqDto } from '../dto/req';
+import { AdminFilterUserReqDto } from '../dto/req/filter-user.req.dto';
 import { AdminUpdateUserReqDto } from '../dto/req/update-user.req.dto';
 
 @Injectable()
@@ -45,5 +47,12 @@ export class UserService {
     existed.firstName = data.firstName;
     existed.lastName = data.lastName;
     this.userRepo.save(existed);
+  }
+
+  async filter(data: AdminFilterUserReqDto): Promise<PaginatedResDto<User>> {
+    const { page, size } = data;
+    const [total, result] = await this.userRepo.filter(data);
+    const parsedResult = instanceToPlain(result) as User[];
+    return new PaginatedResDto(total, parsedResult, { page, size });
   }
 }

@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -18,8 +19,10 @@ import {
 } from '@nestjs/swagger';
 import { User } from 'src/database/entities';
 import { OkResDto } from 'src/shared/dto/ok.res.dto';
+import { PaginatedResDto } from 'src/shared/dto/paginated.res.dto';
 import { str } from 'src/shared/utils';
 import { AdminCreateUserReqDto } from '../dto/req';
+import { AdminFilterUserReqDto } from '../dto/req/filter-user.req.dto';
 import { AdminUpdateUserReqDto } from '../dto/req/update-user.req.dto';
 import { UserService } from '../services';
 
@@ -33,7 +36,7 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ type: () => OkResDto })
+  @ApiOkResponse({ type: OkResDto })
   @ApiOperation({ summary: 'Create user manually' })
   async create(@Body() body: AdminCreateUserReqDto): Promise<OkResDto> {
     this.log.debug(`Admin create user with data: ${str(body)}`);
@@ -41,8 +44,18 @@ export class UserController {
     return new OkResDto('User created');
   }
 
+  @Get('filter')
+  @ApiOkResponse({ type: PaginatedResDto<User> })
+  @ApiOperation({ summary: 'Filter users with pagination' })
+  async filter(
+    @Query() data: AdminFilterUserReqDto,
+  ): Promise<PaginatedResDto<User>> {
+    this.log.debug(`Filter users with data: ${str(data)}`);
+    return this.userService.filter(data);
+  }
+
   @Get(':id')
-  @ApiOkResponse({ type: () => User })
+  @ApiOkResponse({ type: User })
   @ApiOperation({ summary: `Get user's profile by ID` })
   async getProfileById(@Param('id') id: number): Promise<Partial<User>> {
     this.log.debug(`Get profile of user by ID: ${id}`);
@@ -50,7 +63,7 @@ export class UserController {
   }
 
   @Patch(':id')
-  @ApiOkResponse({ type: () => OkResDto })
+  @ApiOkResponse({ type: OkResDto })
   @ApiOperation({ summary: `Update user's profile by ID` })
   async updateById(
     @Param('id') id: number,
@@ -62,7 +75,7 @@ export class UserController {
   }
 
   @Delete(':id/delete')
-  @ApiOkResponse({ type: () => OkResDto })
+  @ApiOkResponse({ type: OkResDto })
   @ApiOperation({ summary: 'Soft delete user by ID' })
   async softDelete(@Param('id') id: number): Promise<OkResDto> {
     this.log.debug(`Soft delete user by ID: ${id}`);
@@ -71,7 +84,7 @@ export class UserController {
   }
 
   @Delete(':id/force-delete')
-  @ApiOkResponse({ type: () => OkResDto })
+  @ApiOkResponse({ type: OkResDto })
   @ApiOperation({ summary: 'Permanently delete user by ID' })
   async forceDelete(@Param('id') id: number): Promise<OkResDto> {
     this.log.debug(`Force delete user by ID: ${id}`);

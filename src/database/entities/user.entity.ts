@@ -64,11 +64,12 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Exclude({ toPlainOnly: true })
   @ApiProperty()
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @Exclude()
+  @Exclude({ toPlainOnly: true })
   isPasswordChanged = false;
 
   @BeforeInsert()

@@ -35,7 +35,7 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ type: () => LoginResDto })
+  @ApiOkResponse({ type: LoginResDto })
   @ApiOperation({ summary: 'Login with username and password' })
   async login(@Body() body: LoginReqDto): Promise<LoginResDto> {
     this.log.debug(`Login with data: ${str(body, 'password')}`);
@@ -45,7 +45,7 @@ export class AuthController {
   @Public()
   @Post('register')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ type: () => User })
+  @ApiOkResponse({ type: User })
   @ApiOperation({ summary: 'Register new user' })
   async register(@Body() body: RegisterReqDto): Promise<Partial<User>> {
     this.log.debug(`Register with data: ${str(body, 'password')}`);
@@ -54,7 +54,7 @@ export class AuthController {
 
   @ApiBearerAuth()
   @Get('profile')
-  @ApiOkResponse({ type: () => User })
+  @ApiOkResponse({ type: User })
   @ApiOperation({ summary: `Get current's user profile` })
   async profile(@CurrentUser() user: Partial<User>): Promise<Partial<User>> {
     this.log.debug(`Get profile of user: ${user.username}`);
@@ -64,7 +64,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Get('forgot-password')
-  @ApiOkResponse({ type: () => OkResDto })
+  @ApiOkResponse({ type: OkResDto })
   @ApiOperation({ summary: 'Request forgot password link by email' })
   async forgotPassword(@Query('email') email: string): Promise<OkResDto> {
     this.log.debug(`Forgot password request with email: ${email}`);
@@ -74,7 +74,7 @@ export class AuthController {
 
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ type: () => OkResDto })
+  @ApiOkResponse({ type: OkResDto })
   @ApiOperation({ summary: 'Reset password' })
   async resetPassword(
     @CurrentUser() user: Partial<User>,
