@@ -43,9 +43,7 @@ export class UserService {
   async updateById(id: number, data: AdminUpdateUserReqDto): Promise<void> {
     const existed = await this.userRepo.findById(id);
     if (!existed) throw new NotFoundException('User not found');
-    existed.email = data.email;
-    existed.firstName = data.firstName;
-    existed.lastName = data.lastName;
+    Object.assign(existed, data);
     this.userRepo.save(existed);
   }
 

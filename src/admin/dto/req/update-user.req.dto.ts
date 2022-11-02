@@ -5,4 +5,5 @@ export class AdminUpdateUserReqDto extends PickType(User, [
   'email',
   'firstName',
   'lastName',
+  'status',
 ] as const) {}
