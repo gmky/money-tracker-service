@@ -8,6 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { compareSync } from 'bcrypt';
 import { instanceToPlain } from 'class-transformer';
+import { info } from 'console';
 import { User } from 'src/database/entities';
 import { UserRepo } from 'src/database/repository';
 import { RegisterReqDto } from './dto/req';
@@ -33,7 +34,11 @@ export class AuthService {
     if (!user) throw new NotFoundException('User not found');
     const passwordCheck = compareSync(password, user.password);
     if (!passwordCheck) throw new UnauthorizedException('Unauthorized');
-    const accessToken = this.jwtService.sign(instanceToPlain(user));
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { createdAt, updatedAt, ...info } = instanceToPlain(user);
+    const accessToken = this.jwtService.sign(instanceToPlain(info), {
+      subject: user.username,
+    });
     return {
       accessToken,
       info: instanceToPlain(user),

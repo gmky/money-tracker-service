@@ -19,6 +19,8 @@ export class CorsConfig {
 }
 
 export class JwtConfig {
+  issuer: string;
+
   base64Secret: string;
 
   tokenValidityInSeconds: number;

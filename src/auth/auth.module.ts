@@ -20,6 +20,7 @@ import { JwtStrategy, JwtAuthGuard, RoleGuard } from './strategy';
           secret: jwtConfig.base64Secret,
           signOptions: {
             expiresIn: jwtConfig.tokenValidityInSeconds,
+            issuer: jwtConfig.issuer,
           },
         };
       },
