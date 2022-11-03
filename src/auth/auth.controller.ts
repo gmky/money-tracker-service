@@ -19,7 +19,7 @@ import { isEmail } from 'class-validator';
 import { User } from 'src/database/entities';
 import { CurrentUser } from 'src/shared/decors';
 import { Public } from 'src/shared/decors/public.decor';
-import { OkResDto } from 'src/shared/dto/ok.res.dto';
+import { OkResDto } from 'src/shared/dto';
 import { str } from 'src/shared/utils';
 import { AuthService } from './auth.service';
 import { LoginReqDto, RegisterReqDto, ResetPasswordReqDto } from './dto/req';

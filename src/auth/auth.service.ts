@@ -9,8 +9,8 @@ import { JwtService } from '@nestjs/jwt';
 import { compareSync } from 'bcrypt';
 import { instanceToPlain } from 'class-transformer';
 import { User } from 'src/database/entities';
-import { UserRepo } from 'src/database/repository/user.repo';
-import { RegisterReqDto } from './dto/req/register.dto';
+import { UserRepo } from 'src/database/repository';
+import { RegisterReqDto } from './dto/req';
 import { LoginResDto } from './dto/res';
 
 @Injectable()

@@ -7,7 +7,7 @@ import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { CorsConfig, OpenApiConfig } from './shared/config';
 import { ServerConfig } from './shared/config/server.config';
-import { PaginatedResDto } from './shared/dto/paginated.res.dto';
+import { PaginatedResDto } from './shared/dto';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

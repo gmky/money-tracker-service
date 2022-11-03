@@ -19,12 +19,13 @@ import {
 } from '@nestjs/swagger';
 import { User } from 'src/database/entities';
 import { ApiPaginatedResponse } from 'src/shared/decors';
-import { OkResDto } from 'src/shared/dto/ok.res.dto';
-import { PaginatedResDto } from 'src/shared/dto/paginated.res.dto';
+import { OkResDto, PaginatedResDto } from 'src/shared/dto';
 import { str } from 'src/shared/utils';
-import { AdminCreateUserReqDto } from '../dto/req';
-import { AdminFilterUserReqDto } from '../dto/req/filter-user.req.dto';
-import { AdminUpdateUserReqDto } from '../dto/req/update-user.req.dto';
+import {
+  AdminCreateUserReqDto,
+  AdminFilterUserReqDto,
+  AdminUpdateUserReqDto,
+} from '../dto/req';
 import { UserService } from '../services';
 
 @ApiBearerAuth()

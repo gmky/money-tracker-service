@@ -6,11 +6,13 @@ import {
 } from '@nestjs/common';
 import { instanceToPlain } from 'class-transformer';
 import { User } from 'src/database/entities';
-import { UserRepo } from 'src/database/repository/user.repo';
-import { PaginatedResDto } from 'src/shared/dto/paginated.res.dto';
-import { AdminCreateUserReqDto } from '../dto/req';
-import { AdminFilterUserReqDto } from '../dto/req/filter-user.req.dto';
-import { AdminUpdateUserReqDto } from '../dto/req/update-user.req.dto';
+import { UserRepo } from 'src/database/repository';
+import { PaginatedResDto } from 'src/shared/dto';
+import {
+  AdminCreateUserReqDto,
+  AdminFilterUserReqDto,
+  AdminUpdateUserReqDto,
+} from '../dto/req';
 
 @Injectable()
 export class UserService {
