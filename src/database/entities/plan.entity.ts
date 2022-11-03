@@ -16,11 +16,14 @@ export class Plan {
   @Column({ unique: true })
   name: UserPlanEnum;
 
-  @Column({ default: 0, comment: 'Monthly price' })
-  price: number;
+  @Column({ name: 'monthly_price', default: 0, comment: 'Monthly price' })
+  monthlyPrice: number;
 
-  @Column({ name: 'annual_discount', default: 0 })
-  annualDiscount: number;
+  @Column({ name: 'annual_price', default: 0 })
+  annualPrice: number;
+
+  @Column({ name: 'lifetime_price', default: 0 })
+  lifetimePrice: number;
 
   @Column({ name: 'tw_limit', default: 0, comment: 'Total wallet limit' })
   totalWallets: number;
