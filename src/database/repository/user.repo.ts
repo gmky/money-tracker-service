@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminFilterUserReqDto } from 'src/admin/dto/req/filter-user.req.dto';
 import { UserStatusEnum } from 'src/shared/enum';
-import { In, Like, Repository } from 'typeorm';
+import { In, IsNull, Like, Not, Repository } from 'typeorm';
 import { User } from '../entities';
 
 @Injectable()
@@ -46,12 +46,12 @@ export class UserRepo {
     data: AdminFilterUserReqDto,
   ): Promise<[total: number, result: User[]]> {
     const { page, size } = data;
-    console.log(data);
     const query = {
-      username: Like(`${data.username}%`),
-      email: Like(`${data.email}%`),
-      status: In(data.status),
+      username: data.username ? Like(`${data.username}%`) : Not(IsNull()),
+      email: data.email ? Like(`${data.email}%`) : Not(IsNull()),
+      status: data.status ? In(data.status) : Not(IsNull()),
     };
+    console.log(query);
     const total = await this.users.countBy(query);
     const result = await this.users.find({
       where: query,

@@ -1,20 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsAlphanumeric, IsEnum, IsString } from 'class-validator';
+import { IsAlphanumeric, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Pageable } from 'src/shared/dto/pageable.req.dto';
 import { UserStatusEnum } from 'src/shared/enum';
 
 export class AdminFilterUserReqDto extends Pageable {
-  @ApiProperty()
+  @IsOptional()
   @IsAlphanumeric()
-  username: string;
+  @ApiProperty({ required: false })
+  username?: string;
 
-  @ApiProperty()
+  @IsOptional()
   @IsString()
-  email: string;
+  @ApiProperty({ required: false })
+  email?: string;
 
   @Transform(({ value }) => [value].flatMap((item) => item))
-  @ApiProperty({ type: [UserStatusEnum] })
+  @ApiProperty({ enum: UserStatusEnum, isArray: true, required: false })
   @IsEnum(UserStatusEnum, { each: true })
-  status: UserStatusEnum[];
+  @IsOptional()
+  status?: UserStatusEnum[];
 }

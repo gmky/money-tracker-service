@@ -41,7 +41,7 @@ export class User {
 
   @Column()
   @IsString()
-  @Exclude({ toClassOnly: true })
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @ApiProperty()
@@ -69,11 +69,11 @@ export class User {
   @Column({ length: 12, default: UserRoleEnum.USER })
   role: UserRoleEnum;
 
-  @Exclude({ toClassOnly: true })
+  @Exclude({ toPlainOnly: true })
   @Column({ name: 'tw_limit', default: 0, comment: 'Total wallet limit' })
   totalWalletLimit: number;
 
-  @Exclude({ toClassOnly: true })
+  @Exclude({ toPlainOnly: true })
   @Column({
     name: ' tcw_limit',
     default: 0,
@@ -81,7 +81,7 @@ export class User {
   })
   totalCreditWalletLimit: number;
 
-  @Exclude({ toClassOnly: true })
+  @Exclude({ toPlainOnly: true })
   @Column({
     name: 'tsw_limit',
     default: 0,
@@ -89,7 +89,7 @@ export class User {
   })
   totalSavingsWalletLimit: number;
 
-  @Exclude({ toClassOnly: true })
+  @Exclude({ toPlainOnly: true })
   @Column({
     name: 'tnw_limit',
     default: 0,
@@ -106,7 +106,6 @@ export class User {
   updatedAt: Date;
 
   @Exclude({ toPlainOnly: true })
-  @ApiProperty()
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
