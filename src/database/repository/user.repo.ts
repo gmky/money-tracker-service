@@ -51,7 +51,6 @@ export class UserRepo {
       email: data.email ? Like(`${data.email}%`) : Not(IsNull()),
       status: data.status ? In(data.status) : Not(IsNull()),
     };
-    console.log(query);
     const total = await this.users.countBy(query);
     const result = await this.users.find({
       where: query,

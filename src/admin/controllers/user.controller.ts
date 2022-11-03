@@ -18,8 +18,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { User } from 'src/database/entities';
-import { ApiPaginatedResponse } from 'src/shared/decors';
+import { AnyRole, ApiPaginatedResponse } from 'src/shared/decors';
 import { OkResDto, PaginatedResDto } from 'src/shared/dto';
+import { UserRoleEnum } from 'src/shared/enum';
 import { str } from 'src/shared/utils';
 import {
   AdminCreateUserReqDto,
@@ -28,6 +29,7 @@ import {
 } from '../dto/req';
 import { UserService } from '../services';
 
+@AnyRole(UserRoleEnum.ADMIN, UserRoleEnum.STAFF)
 @ApiBearerAuth()
 @ApiTags('Admin / User')
 @Controller('admin/users')

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/strategy/jwt.guard';
 import { AdminModule } from './admin/admin.module';
+import { RoleGuard } from './auth/strategy';
 
 @Module({
   imports: [
@@ -21,6 +22,10 @@ import { AdminModule } from './admin/admin.module';
     AdminModule,
   ],
   controllers: [AppController],
-  providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }, AppService],
+  providers: [
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RoleGuard },
+    AppService,
+  ],
 })
 export class AppModule {}
