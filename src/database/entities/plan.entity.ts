@@ -46,6 +46,12 @@ export class Plan {
   })
   totalNormalWalletLimit: number;
 
+  @Column({ name: 'start_at', comment: 'Start time of plan' })
+  startAt: Date;
+
+  @Column({ name: 'end_at', comment: 'End time of plan' })
+  endAt: Date;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
@@ -54,4 +60,17 @@ export class Plan {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
+
+  isFinished(): boolean {
+    const now = new Date();
+    return now.getTime() > this.endAt.getTime();
+  }
+
+  isActive(): boolean {
+    const now = new Date();
+    return (
+      this.startAt.getTime() <= now.getTime() &&
+      this.endAt.getTime() >= now.getTime()
+    );
+  }
 }

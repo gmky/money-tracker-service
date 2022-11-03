@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { instanceToPlain } from 'class-transformer';
 import { User } from 'src/database/entities';
-import { UserRepo } from 'src/database/repository';
+import { PlanRepo, UserRepo } from 'src/database/repository';
 import { PaginatedResDto } from 'src/shared/dto';
 import {
   AdminCreateUserReqDto,
@@ -18,13 +18,19 @@ import {
 export class UserService {
   private readonly log = new Logger(UserService.name);
 
-  constructor(private readonly userRepo: UserRepo) {}
+  constructor(
+    private readonly userRepo: UserRepo,
+    private readonly planRepo: PlanRepo,
+  ) {}
 
   async createUser(body: AdminCreateUserReqDto): Promise<User> {
     let existed = await this.userRepo.findByEmail(body.email);
     if (existed) throw new BadRequestException('Email already taken');
     existed = await this.userRepo.findByUsername(body.username);
     if (existed) throw new BadRequestException('Username already taken');
+    const currentPlan = await this.planRepo.getActivePlanInfo(body.plan);
+    if (!currentPlan)
+      throw new BadRequestException(`Plan ${body.plan} is unavailable`);
     return this.userRepo.save(body as User);
   }
 
