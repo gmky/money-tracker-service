@@ -41,7 +41,7 @@ export class User {
 
   @Column()
   @IsString()
-  @Exclude({ toPlainOnly: true })
+  @Exclude({ toClassOnly: true })
   password: string;
 
   @ApiProperty()
@@ -54,20 +54,48 @@ export class User {
   @Column({ name: 'last_name', length: 50 })
   lastName: string;
 
-  @ApiProperty()
+  @ApiProperty({ enum: UserStatusEnum })
   @IsEnum(UserStatusEnum)
   @Column({ length: 12, default: UserStatusEnum.ACTIVE })
   status: UserStatusEnum;
 
-  @ApiProperty()
+  @ApiProperty({ enum: UserPlanEnum })
   @IsEnum(UserPlanEnum)
   @Column({ length: 12, default: UserPlanEnum.FREE })
   plan: UserPlanEnum;
 
-  @ApiProperty()
+  @ApiProperty({ enum: UserRoleEnum })
   @IsEnum(UserRoleEnum)
   @Column({ length: 12, default: UserRoleEnum.USER })
   role: UserRoleEnum;
+
+  @Exclude({ toClassOnly: true })
+  @Column({ name: 'tw_limit', default: 0, comment: 'Total wallet limit' })
+  totalWalletLimit: number;
+
+  @Exclude({ toClassOnly: true })
+  @Column({
+    name: ' tcw_limit',
+    default: 0,
+    comment: 'Total credit wallet limit',
+  })
+  totalCreditWalletLimit: number;
+
+  @Exclude({ toClassOnly: true })
+  @Column({
+    name: 'tsw_limit',
+    default: 0,
+    comment: 'Total savings wallet limit',
+  })
+  totalSavingsWalletLimit: number;
+
+  @Exclude({ toClassOnly: true })
+  @Column({
+    name: 'tnw_limit',
+    default: 0,
+    comment: 'Total normal wallet limit',
+  })
+  totalNormalWalletLimit: number;
 
   @ApiProperty()
   @CreateDateColumn({ name: 'created_at' })
