@@ -8,7 +8,6 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { compareSync } from 'bcrypt';
 import { instanceToPlain } from 'class-transformer';
-import { info } from 'console';
 import { User } from 'src/database/entities';
 import { UserRepo } from 'src/database/repository';
 import { RegisterReqDto } from './dto/req';
