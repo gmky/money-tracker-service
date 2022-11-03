@@ -7,8 +7,8 @@ import {
   HttpStatus,
   Logger,
   Param,
-  Patch,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import {
@@ -64,7 +64,7 @@ export class UserController {
     return this.userService.getProfileById(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @ApiOkResponse({ type: OkResDto })
   @ApiOperation({ summary: `Update user's profile by ID` })
   async updateById(

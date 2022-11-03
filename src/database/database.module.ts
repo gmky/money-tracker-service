@@ -2,7 +2,8 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfig } from 'src/shared/config';
-import { User } from './entities';
+import { User, Wallet } from './entities';
+import { WalletRepo } from './repository';
 import { UserRepo } from './repository/user.repo';
 
 @Global()
@@ -21,15 +22,15 @@ import { UserRepo } from './repository/user.repo';
           password: dbConfig.password,
           database: dbConfig.name,
           poolSize: 100,
-          entities: [],
+          entities: [User, Wallet],
           synchronize: true,
           autoLoadEntities: true,
         };
       },
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Wallet]),
   ],
-  providers: [UserRepo],
-  exports: [UserRepo],
+  providers: [UserRepo, WalletRepo],
+  exports: [UserRepo, WalletRepo],
 })
 export class DatabaseModule {}
