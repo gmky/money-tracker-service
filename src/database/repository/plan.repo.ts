@@ -20,4 +20,9 @@ export class PlanRepo {
       },
     });
   }
+
+  save(data: Plan): Promise<Plan> {
+    const entity = this.plans.create(data);
+    return this.plans.save(entity);
+  }
 }

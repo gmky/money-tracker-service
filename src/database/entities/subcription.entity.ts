@@ -18,10 +18,10 @@ export class Subcription {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: 12 })
   plan: UserPlanEnum;
 
-  @Column({ default: SubcriptionStatusEnum.ACTIVE })
+  @Column({ length: 12, default: SubcriptionStatusEnum.ACTIVE })
   status: SubcriptionStatusEnum;
 
   @Column({ name: 'start_at' })
@@ -33,7 +33,11 @@ export class Subcription {
   @Column({ default: 0 })
   price: number;
 
-  @Column({ name: 'payment_option', default: PaymentOptionEnum.MONTHLY })
+  @Column({
+    length: 12,
+    name: 'payment_option',
+    default: PaymentOptionEnum.MONTHLY,
+  })
   paymentOption: PaymentOptionEnum;
 
   @ManyToOne(() => User)

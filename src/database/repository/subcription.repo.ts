@@ -9,4 +9,8 @@ export class SubcriptionRepo {
     @InjectRepository(Subcription)
     private readonly subs: Repository<Subcription>,
   ) {}
+
+  save(sub: Subcription): Promise<Subcription> {
+    return this.subs.save(sub);
+  }
 }
