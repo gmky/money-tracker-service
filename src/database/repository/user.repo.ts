@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminFilterUserReqDto } from 'src/admin/dto/req/filter-user.req.dto';
 import { UserStatusEnum } from 'src/shared/enum';
-import { In, IsNull, Like, Not, Repository } from 'typeorm';
+import { DeepPartial, In, IsNull, Like, Not, Repository } from 'typeorm';
 import { User } from '../entities';
 
 @Injectable()
@@ -27,9 +27,17 @@ export class UserRepo {
     return this.users.findOneBy({ email });
   }
 
-  save(user: User): Promise<User> {
+  findByUsernameOrEmail(username: string, email: string): Promise<User> {
+    return this.users.findOneBy([{ username }, { email }]);
+  }
+
+  prepare(data: DeepPartial<User>): User {
+    return this.users.create(data);
+  }
+
+  save(user: User, transaction = true): Promise<User> {
     const entity = this.users.create(user);
-    return this.users.save(entity);
+    return this.users.save(entity, { transaction });
   }
 
   softDelete(id: number): Promise<void> {

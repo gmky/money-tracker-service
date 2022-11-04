@@ -27,6 +27,7 @@ import { UserRepo } from './repository/user.repo';
           entities: [User, Wallet, Plan, Subcription],
           synchronize: true,
           autoLoadEntities: true,
+          logging: true,
         };
       },
     }),

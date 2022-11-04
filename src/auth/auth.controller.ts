@@ -58,7 +58,7 @@ export class AuthController {
   @ApiOperation({ summary: `Get current's user profile` })
   async profile(@CurrentUser() user: Partial<User>): Promise<Partial<User>> {
     this.log.debug(`Get profile of user: ${user.username}`);
-    return this.authService.profile(user.id);
+    return user;
   }
 
   @Public()

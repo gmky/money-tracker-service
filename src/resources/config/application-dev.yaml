@@ -22,7 +22,7 @@ security:
   jwt:
     issuer: moneytracker
     base64Secret: 'YXMyOTNPYXNrZEpIMTIzMWxqYXNrbGpLSlNBREgK'
-    tokenValidityInSeconds: 1800
+    tokenValidityInSeconds: 3600
 
 redis:
   host: localhost

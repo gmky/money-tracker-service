@@ -13,6 +13,7 @@ export class AdminCreateUserReqDto extends OmitType(User, [
   @ApiProperty()
   password: string;
 
+  @ApiProperty({ enum: UserPlanEnum, required: false })
   @IsOptional()
   @IsEnum(UserPlanEnum)
   plan?: UserPlanEnum;

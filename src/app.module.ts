@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import { configuration } from './shared/config';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, RouterModule } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/strategy/jwt.guard';
 import { AdminModule } from './admin/admin.module';
 import { RoleGuard } from './auth/strategy';
@@ -17,6 +17,9 @@ import { RoleGuard } from './auth/strategy';
       expandVariables: true,
       load: [configuration],
     }),
+    RouterModule.register([
+      { path: 'api', children: [AuthModule, AdminModule] },
+    ]),
     DatabaseModule,
     AuthModule,
     AdminModule,
