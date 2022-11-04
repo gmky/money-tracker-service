@@ -34,7 +34,7 @@ async function bootstrap() {
   const apiDocs = new DocumentBuilder()
     .setTitle(oaConfig.title)
     .setVersion(oaConfig.version)
-    .setDescription(oaConfig.version)
+    .setDescription(oaConfig.description)
     .addBearerAuth()
     .build();
 

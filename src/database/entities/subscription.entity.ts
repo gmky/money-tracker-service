@@ -1,6 +1,8 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsPositive } from 'class-validator';
 import {
   PaymentOptionEnum,
-  SubcriptionStatusEnum,
+  SubscriptionStatusEnum,
   UserPlanEnum,
 } from 'src/shared/enum';
 import {
@@ -15,24 +17,32 @@ import { User } from './user.entity';
 
 @Entity({ name: 'subscriptions' })
 export class Subscription {
+  @IsPositive()
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({ enum: UserPlanEnum })
   @Column({ length: 12 })
   plan: UserPlanEnum;
 
-  @Column({ length: 12, default: SubcriptionStatusEnum.ACTIVE })
-  status: SubcriptionStatusEnum;
+  @ApiProperty({ enum: SubscriptionStatusEnum })
+  @Column({ length: 12, default: SubscriptionStatusEnum.ACTIVE })
+  status: SubscriptionStatusEnum;
 
+  @ApiProperty()
   @Column({ name: 'start_at' })
   startAt: Date;
 
+  @ApiProperty()
   @Column({ name: 'end_at', nullable: true })
   endAt: Date;
 
+  @ApiProperty()
   @Column({ default: 0 })
   price: number;
 
+  @ApiProperty({ enum: PaymentOptionEnum })
   @Column({
     length: 12,
     name: 'payment_option',

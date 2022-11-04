@@ -1,4 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { instanceToPlain } from 'class-transformer';
 import { Subscription } from 'src/database/entities';
 import { SubscriptionRepo } from 'src/database/repository';
 import { Pageable, PaginatedResDto } from 'src/shared/dto';
@@ -14,6 +15,17 @@ export class SubscriptionService {
     data: AdminFilterSubcriptionReqDto,
     pageable: Pageable,
   ): Promise<PaginatedResDto<Subscription>> {
-    return new PaginatedResDto(0, [], pageable);
+    const [total, result] = await this.subRepo.filter(data, pageable);
+    return new PaginatedResDto(
+      total,
+      instanceToPlain(result) as Subscription[],
+      pageable,
+    );
+  }
+
+  async findById(id: number): Promise<Partial<Subscription>> {
+    const existed = await this.subRepo.findById(id);
+    if (!existed) throw new NotFoundException('Subscription not found');
+    return instanceToPlain(existed);
   }
 }

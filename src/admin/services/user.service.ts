@@ -11,7 +11,7 @@ import { PlanRepo, SubscriptionRepo, UserRepo } from 'src/database/repository';
 import { Pageable, PaginatedResDto } from 'src/shared/dto';
 import {
   PaymentOptionEnum,
-  SubcriptionStatusEnum,
+  SubscriptionStatusEnum,
   UserRoleEnum,
 } from 'src/shared/enum';
 import { DataSource } from 'typeorm';
@@ -64,14 +64,14 @@ export class UserService {
         sub.plan = currentPlan.name;
         sub.planDetail = currentPlan;
         sub.price = currentPlan.monthlyPrice;
-        sub.status = SubcriptionStatusEnum.ACTIVE;
+        sub.status = SubscriptionStatusEnum.ACTIVE;
 
         // Set wallets limit to user
         user.totalWalletLimit = currentPlan.totalWallets;
         user.totalCreditWalletLimit = currentPlan.totalCreditWalletLimit;
         user.totalNormalWalletLimit = currentPlan.totalNormalWalletLimit;
         user.totalSavingsWalletLimit = currentPlan.totalSavingsWalletLimit;
-        user = await qr.manager.save(user, { reload: false });
+        user = await qr.manager.save(user);
 
         // Set owner of subcription
         sub.user = user;

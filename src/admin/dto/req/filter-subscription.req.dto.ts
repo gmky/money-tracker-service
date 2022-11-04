@@ -1,25 +1,30 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsPositive } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsEnum, IsOptional, IsPositive } from 'class-validator';
 import {
   PaymentOptionEnum,
-  SubcriptionStatusEnum,
+  SubscriptionStatusEnum,
   UserPlanEnum,
 } from 'src/shared/enum';
 
 export class AdminFilterSubcriptionReqDto {
-  @ApiProperty({ enum: UserPlanEnum })
-  @IsEnum(UserPlanEnum)
-  plan: UserPlanEnum;
+  @Transform(({ value }) => [value].flat())
+  @ApiProperty({ enum: UserPlanEnum, isArray: true })
+  @IsEnum(UserPlanEnum, { each: true })
+  plan: UserPlanEnum[];
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
+  @IsOptional()
   @IsPositive()
   userId: number;
 
-  @ApiProperty({ enum: SubcriptionStatusEnum })
-  @IsEnum(SubcriptionStatusEnum)
-  status: SubcriptionStatusEnum;
+  @Transform(({ value }) => [value].flat())
+  @ApiProperty({ enum: SubscriptionStatusEnum, isArray: true })
+  @IsEnum(SubscriptionStatusEnum, { each: true })
+  status: SubscriptionStatusEnum[];
 
-  @ApiProperty({ enum: PaymentOptionEnum })
-  @IsEnum(PaymentOptionEnum)
-  paymentOption: PaymentOptionEnum;
+  @Transform(({ value }) => [value].flat())
+  @ApiProperty({ enum: PaymentOptionEnum, isArray: true })
+  @IsEnum(PaymentOptionEnum, { each: true })
+  paymentOption: PaymentOptionEnum[];
 }
