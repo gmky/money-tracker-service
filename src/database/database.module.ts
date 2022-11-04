@@ -35,7 +35,7 @@ import { UserRepo } from './repository/user.repo';
               host: redisConfig.host,
               port: redisConfig.port,
               user: redisConfig.user,
-              pass: redisConfig.pass,
+              password: redisConfig.pass,
               db: redisConfig.db,
             },
           },

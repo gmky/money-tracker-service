@@ -19,6 +19,10 @@ export class PlanRepo {
         endAt: Raw((alias) => `${alias} >= SYSDATE() OR ${alias} IS NULL`),
         name,
       },
+      cache: {
+        id: `plan-active-${name.toLowerCase()}`,
+        milliseconds: 50000,
+      },
     });
   }
 
