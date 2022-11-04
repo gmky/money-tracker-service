@@ -6,8 +6,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { instanceToPlain } from 'class-transformer';
-import { Subcription, User } from 'src/database/entities';
-import { PlanRepo, SubcriptionRepo, UserRepo } from 'src/database/repository';
+import { Subscription, User } from 'src/database/entities';
+import { PlanRepo, SubscriptionRepo, UserRepo } from 'src/database/repository';
 import { PaginatedResDto } from 'src/shared/dto';
 import {
   PaymentOptionEnum,
@@ -28,7 +28,7 @@ export class UserService {
   constructor(
     private readonly userRepo: UserRepo,
     private readonly planRepo: PlanRepo,
-    private readonly subRepo: SubcriptionRepo,
+    private readonly subRepo: SubscriptionRepo,
     private readonly ds: DataSource,
   ) {}
 
@@ -58,7 +58,7 @@ export class UserService {
           throw new BadRequestException(`Plan ${body.plan} is unavailable`);
 
         // Create default subcription for user with provided plan
-        let sub = new Subcription();
+        let sub = new Subscription();
         sub.startAt = new Date();
         sub.paymentOption = PaymentOptionEnum.MONTHLY;
         sub.plan = currentPlan.name;

@@ -3,6 +3,7 @@ import {
   DataSource,
   EntitySubscriberInterface,
   EventSubscriber,
+  SoftRemoveEvent,
   UpdateEvent,
 } from 'typeorm';
 import { User } from '../entities';
@@ -12,10 +13,18 @@ export class UserSubcriber implements EntitySubscriberInterface<User> {
   constructor(private readonly ds: DataSource) {
     ds.subscribers.push(this);
   }
+
   listenTo() {
     return User;
   }
+
   afterUpdate(event: UpdateEvent<User>): void | Promise<any> {
+    this.ds.queryResultCache.remove([
+      `${CacheKeyEnum.USER_BY_USERNAME_PREFIX}-${event.databaseEntity.username}`,
+    ]);
+  }
+
+  afterSoftRemove(event: SoftRemoveEvent<User>): void | Promise<any> {
     this.ds.queryResultCache.remove([
       `${CacheKeyEnum.USER_BY_USERNAME_PREFIX}-${event.databaseEntity.username}`,
     ]);

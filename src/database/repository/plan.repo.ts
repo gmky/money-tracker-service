@@ -46,4 +46,18 @@ export class PlanRepo {
     });
     return [total, result];
   }
+
+  findById(id: number): Promise<Plan> {
+    return this.plans.findOne({
+      where: { id },
+      cache: {
+        id: `${CacheKeyEnum.PLAN_DETAIL_PREFIX}-${id}`,
+        milliseconds: 600000,
+      },
+    });
+  }
+
+  softRemove(id: number): Promise<Plan> {
+    return this.plans.softRemove({ id });
+  }
 }

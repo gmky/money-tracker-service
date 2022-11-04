@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { IsDate, IsEnum, IsNumber, IsOptional } from 'class-validator';
 import { UserPlanEnum } from 'src/shared/enum';
 import {
@@ -85,6 +86,7 @@ export class Plan {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
+  @Exclude({ toPlainOnly: true })
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 

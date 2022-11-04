@@ -4,4 +4,6 @@ export enum CacheKeyEnum {
   USER_FILTER = 'user-filter',
 
   PLAN_ACTIVE_PREFIX = 'plan-active',
+
+  PLAN_DETAIL_PREFIX = 'plan-detail',
 }

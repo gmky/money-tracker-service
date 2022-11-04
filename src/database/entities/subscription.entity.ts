@@ -13,8 +13,8 @@ import {
 import { Plan } from './plan.entity';
 import { User } from './user.entity';
 
-@Entity({ name: 'subcriptions' })
-export class Subcription {
+@Entity({ name: 'subscriptions' })
+export class Subscription {
   @PrimaryGeneratedColumn()
   id: number;
 
