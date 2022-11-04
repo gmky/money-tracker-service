@@ -10,7 +10,6 @@ import { Subcription, User } from 'src/database/entities';
 import { PlanRepo, SubcriptionRepo, UserRepo } from 'src/database/repository';
 import { PaginatedResDto } from 'src/shared/dto';
 import {
-  CacheKeyEnum,
   PaymentOptionEnum,
   SubcriptionStatusEnum,
   UserRoleEnum,
@@ -109,9 +108,6 @@ export class UserService {
     if (!existed) throw new NotFoundException('User not found');
     Object.assign(existed, data);
     this.userRepo.save(existed);
-    this.ds.queryResultCache.remove([
-      `${CacheKeyEnum.USER_BY_USERNAME_PREFIX}-${existed.username}`,
-    ]);
   }
 
   async filter(data: AdminFilterUserReqDto): Promise<PaginatedResDto<User>> {

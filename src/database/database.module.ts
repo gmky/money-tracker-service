@@ -2,11 +2,9 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfig, RedisConfig } from 'src/shared/config';
-import { Plan, User, Wallet } from './entities';
-import { Subcription } from './entities/subcription.entity';
-import { SubcriptionRepo, WalletRepo } from './repository';
-import { PlanRepo } from './repository/plan.repo';
-import { UserRepo } from './repository/user.repo';
+import entities from './entities';
+import repos from './repository';
+import subcribers from './subcribers';
 
 @Global()
 @Module({
@@ -25,7 +23,7 @@ import { UserRepo } from './repository/user.repo';
           password: dbConfig.password,
           database: dbConfig.name,
           poolSize: 100,
-          entities: [User, Wallet, Plan, Subcription],
+          entities: [...entities],
           synchronize: true,
           autoLoadEntities: true,
           logging: true,
@@ -42,9 +40,9 @@ import { UserRepo } from './repository/user.repo';
         };
       },
     }),
-    TypeOrmModule.forFeature([User, Wallet, Plan, Subcription]),
+    TypeOrmModule.forFeature([...entities]),
   ],
-  providers: [UserRepo, WalletRepo, PlanRepo, SubcriptionRepo],
-  exports: [UserRepo, WalletRepo, PlanRepo, SubcriptionRepo],
+  providers: [...repos, ...subcribers],
+  exports: [...repos],
 })
 export class DatabaseModule {}
