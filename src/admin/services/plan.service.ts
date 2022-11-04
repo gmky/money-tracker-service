@@ -2,7 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { instanceToPlain } from 'class-transformer';
 import { Plan } from 'src/database/entities';
 import { PlanRepo } from 'src/database/repository';
-import { PaginatedResDto } from 'src/shared/dto';
+import { Pageable, PaginatedResDto } from 'src/shared/dto';
 import { CreatePlanReqDto } from '../dto/req/create-plan.req.dto';
 import { AdminFilterPlanReqDto } from '../dto/req/filter-plan.req.dto';
 
@@ -16,13 +16,16 @@ export class PlanService {
     return this.planRepo.save(data as Plan);
   }
 
-  async filter(data: AdminFilterPlanReqDto): Promise<PaginatedResDto<Plan>> {
-    const { page, size } = data;
-    const [total, result] = await this.planRepo.filter(data);
-    return new PaginatedResDto(total, instanceToPlain(result) as Plan[], {
-      page,
-      size,
-    });
+  async filter(
+    data: AdminFilterPlanReqDto,
+    pageable: Pageable,
+  ): Promise<PaginatedResDto<Plan>> {
+    const [total, result] = await this.planRepo.filter(data, pageable);
+    return new PaginatedResDto(
+      total,
+      instanceToPlain(result) as Plan[],
+      pageable,
+    );
   }
 
   async findById(id: number): Promise<Partial<Plan>> {

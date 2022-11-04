@@ -19,7 +19,7 @@ import {
 } from '@nestjs/swagger';
 import { User } from 'src/database/entities';
 import { AnyRole, ApiPaginatedResponse } from 'src/shared/decors';
-import { OkResDto, PaginatedResDto } from 'src/shared/dto';
+import { OkResDto, Pageable, PaginatedResDto } from 'src/shared/dto';
 import { UserRoleEnum } from 'src/shared/enum';
 import { str } from 'src/shared/utils';
 import {
@@ -53,9 +53,10 @@ export class UserController {
   @ApiOperation({ summary: 'Filter users with pagination' })
   async filter(
     @Query() data: AdminFilterUserReqDto,
+    @Query() pageable: Pageable,
   ): Promise<PaginatedResDto<User>> {
     this.log.debug(`Filter users with data: ${str(data)}`);
-    return this.userService.filter(data);
+    return this.userService.filter(data, pageable);
   }
 
   @Get(':id')

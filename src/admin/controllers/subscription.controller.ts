@@ -1,4 +1,4 @@
-import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
+import { Controller, Get, Logger, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/decors';
 import { Pageable, PaginatedResDto } from 'src/shared/dto';

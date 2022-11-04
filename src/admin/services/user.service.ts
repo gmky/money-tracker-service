@@ -8,7 +8,7 @@ import {
 import { instanceToPlain } from 'class-transformer';
 import { Subscription, User } from 'src/database/entities';
 import { PlanRepo, SubscriptionRepo, UserRepo } from 'src/database/repository';
-import { PaginatedResDto } from 'src/shared/dto';
+import { Pageable, PaginatedResDto } from 'src/shared/dto';
 import {
   PaymentOptionEnum,
   SubcriptionStatusEnum,
@@ -110,10 +110,12 @@ export class UserService {
     this.userRepo.save(existed);
   }
 
-  async filter(data: AdminFilterUserReqDto): Promise<PaginatedResDto<User>> {
-    const { page, size } = data;
-    const [total, result] = await this.userRepo.filter(data);
+  async filter(
+    data: AdminFilterUserReqDto,
+    pageable: Pageable,
+  ): Promise<PaginatedResDto<User>> {
+    const [total, result] = await this.userRepo.filter(data, pageable);
     const parsedResult = instanceToPlain(result) as User[];
-    return new PaginatedResDto(total, parsedResult, { page, size });
+    return new PaginatedResDto(total, parsedResult, pageable);
   }
 }

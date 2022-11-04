@@ -1,10 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsAlphanumeric, IsEnum, IsOptional, IsString } from 'class-validator';
-import { Pageable } from 'src/shared/dto/pageable.req.dto';
 import { UserStatusEnum } from 'src/shared/enum';
 
-export class AdminFilterUserReqDto extends Pageable {
+export class AdminFilterUserReqDto {
   @IsOptional()
   @IsAlphanumeric()
   @ApiProperty({ required: false })

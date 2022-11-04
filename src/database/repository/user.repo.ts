@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminFilterUserReqDto } from 'src/admin/dto/req/filter-user.req.dto';
+import { Pageable } from 'src/shared/dto';
 import { CacheKeyEnum, UserStatusEnum } from 'src/shared/enum';
 import { DeepPartial, In, IsNull, Like, Not, Repository } from 'typeorm';
 import { User } from '../entities';
@@ -58,8 +59,8 @@ export class UserRepo {
 
   async filter(
     data: AdminFilterUserReqDto,
+    pageable: Pageable,
   ): Promise<[total: number, result: User[]]> {
-    const { page, size } = data;
     const query = {
       username: data.username ? Like(`${data.username}%`) : Not(IsNull()),
       email: data.email ? Like(`${data.email}%`) : Not(IsNull()),
@@ -68,8 +69,8 @@ export class UserRepo {
     const total = await this.users.countBy(query);
     const result = await this.users.find({
       where: query,
-      skip: (page - 1) * size,
-      take: size,
+      skip: (pageable.page - 1) * pageable.size,
+      take: pageable.size,
     });
     return [total, result];
   }

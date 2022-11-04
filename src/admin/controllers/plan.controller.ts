@@ -16,7 +16,7 @@ import {
 } from '@nestjs/swagger';
 import { Plan } from 'src/database/entities';
 import { AnyRole, ApiPaginatedResponse } from 'src/shared/decors';
-import { OkResDto, PaginatedResDto } from 'src/shared/dto';
+import { OkResDto, Pageable, PaginatedResDto } from 'src/shared/dto';
 import { UserRoleEnum } from 'src/shared/enum';
 import { str } from 'src/shared/utils';
 import { CreatePlanReqDto } from '../dto/req/create-plan.req.dto';
@@ -45,9 +45,10 @@ export class PlanController {
   @ApiOperation({ summary: 'Filter plan with pagination' })
   async filter(
     @Query() body: AdminFilterPlanReqDto,
+    @Query() pageable: Pageable,
   ): Promise<PaginatedResDto<Plan>> {
     this.log.debug(`Filter plan with data: ${str(body)}`);
-    return this.planService.filter(body);
+    return this.planService.filter(body, pageable);
   }
 
   @Get(':id')
