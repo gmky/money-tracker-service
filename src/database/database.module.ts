@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatabaseConfig } from 'src/shared/config';
+import { DatabaseConfig, RedisConfig } from 'src/shared/config';
 import { Plan, User, Wallet } from './entities';
 import { Subcription } from './entities/subcription.entity';
 import { SubcriptionRepo, WalletRepo } from './repository';
@@ -16,6 +16,7 @@ import { UserRepo } from './repository/user.repo';
       inject: [ConfigService],
       useFactory: async (confService: ConfigService) => {
         const dbConfig = confService.get<DatabaseConfig>('database');
+        const redisConfig = confService.get<RedisConfig>('redis');
         return {
           type: 'mysql',
           host: dbConfig.host,
@@ -28,6 +29,16 @@ import { UserRepo } from './repository/user.repo';
           synchronize: true,
           autoLoadEntities: true,
           logging: true,
+          cache: {
+            type: 'redis',
+            options: {
+              host: redisConfig.host,
+              port: redisConfig.port,
+              user: redisConfig.user,
+              pass: redisConfig.pass,
+              db: redisConfig.db,
+            },
+          },
         };
       },
     }),
