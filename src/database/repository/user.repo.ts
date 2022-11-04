@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminFilterUserReqDto } from 'src/admin/dto/req/filter-user.req.dto';
-import { UserStatusEnum } from 'src/shared/enum';
+import { CacheKeyEnum, UserStatusEnum } from 'src/shared/enum';
 import { DeepPartial, In, IsNull, Like, Not, Repository } from 'typeorm';
 import { User } from '../entities';
 
@@ -12,7 +12,13 @@ export class UserRepo {
   ) {}
 
   findActiveByUsername(username: string): Promise<User> {
-    return this.users.findOneBy({ username, status: UserStatusEnum.ACTIVE });
+    return this.users.findOne({
+      where: { username, status: UserStatusEnum.ACTIVE },
+      cache: {
+        id: `${CacheKeyEnum.USER_BY_USERNAME_PREFIX}-${username}`,
+        milliseconds: 60000,
+      },
+    });
   }
 
   findByUsername(username: string): Promise<User> {
@@ -63,7 +69,7 @@ export class UserRepo {
     const result = await this.users.find({
       where: query,
       skip: (page - 1) * size,
-      take: page,
+      take: size,
     });
     return [total, result];
   }

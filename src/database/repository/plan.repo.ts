@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminFilterPlanReqDto } from 'src/admin/dto/req/filter-plan.req.dto';
-import { UserPlanEnum } from 'src/shared/enum';
+import { CacheKeyEnum, UserPlanEnum } from 'src/shared/enum';
 import { In, LessThanOrEqual, Raw, Repository } from 'typeorm';
 import { Plan } from '../entities';
 
@@ -20,8 +20,8 @@ export class PlanRepo {
         name,
       },
       cache: {
-        id: `plan-active-${name.toLowerCase()}`,
-        milliseconds: 50000,
+        id: `${CacheKeyEnum.PLAN_ACTIVE_PREFIX}-${name.toLowerCase()}`,
+        milliseconds: 60000,
       },
     });
   }
