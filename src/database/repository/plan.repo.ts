@@ -35,17 +35,15 @@ export class PlanRepo {
   async filter(
     data: AdminFilterPlanReqDto,
     pageable: Pageable,
-  ): Promise<[total: number, result: Plan[]]> {
+  ): Promise<[result: Plan[], total: number]> {
     const query = {
       name: In(data.name),
     };
-    const total = await this.plans.countBy(query);
-    const result = await this.plans.find({
+    return this.plans.findAndCount({
       where: query,
       skip: (pageable.page - 1) * pageable.size,
       take: pageable.size,
     });
-    return [total, result];
   }
 
   findById(id: number): Promise<Plan> {

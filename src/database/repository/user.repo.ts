@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminFilterUserReqDto } from 'src/admin/dto/req/filter-user.req.dto';
 import { Pageable } from 'src/shared/dto';
-import { CacheKeyEnum, UserStatusEnum } from 'src/shared/enum';
+import { CacheKeyEnum, UserRoleEnum, UserStatusEnum } from 'src/shared/enum';
 import { DeepPartial, In, IsNull, Like, Not, Repository } from 'typeorm';
 import { User } from '../entities';
 
@@ -28,6 +28,14 @@ export class UserRepo {
 
   findById(id: number): Promise<User> {
     return this.users.findOneBy({ id });
+  }
+
+  findByIdAndRoleAndStatus(
+    id: number,
+    role: UserRoleEnum,
+    status: UserStatusEnum,
+  ): Promise<User> {
+    return this.users.findOneBy({ id, role, status });
   }
 
   findByEmail(email: string): Promise<User> {
@@ -60,18 +68,16 @@ export class UserRepo {
   async filter(
     data: AdminFilterUserReqDto,
     pageable: Pageable,
-  ): Promise<[total: number, result: User[]]> {
+  ): Promise<[result: User[], total: number]> {
     const query = {
       username: data.username ? Like(`${data.username}%`) : Not(IsNull()),
       email: data.email ? Like(`${data.email}%`) : Not(IsNull()),
       status: data.status ? In(data.status) : Not(IsNull()),
     };
-    const total = await this.users.countBy(query);
-    const result = await this.users.find({
+    return this.users.findAndCount({
       where: query,
       skip: (pageable.page - 1) * pageable.size,
       take: pageable.size,
     });
-    return [total, result];
   }
 }

@@ -34,7 +34,7 @@ export class Subscription {
   @Column({ name: 'start_at' })
   startAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @Column({ name: 'end_at', nullable: true })
   endAt: Date;
 

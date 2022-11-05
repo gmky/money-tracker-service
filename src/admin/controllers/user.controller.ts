@@ -88,11 +88,11 @@ export class UserController {
     return new OkResDto('User deleted');
   }
 
-  @Delete(':id/force-delete')
-  @ApiOkResponse({ type: OkResDto })
-  @ApiOperation({ summary: 'Permanently delete user by ID' })
-  async forceDelete(@Param('id') id: number): Promise<OkResDto> {
-    this.log.debug(`Force delete user by ID: ${id}`);
-    return new OkResDto('User deleted');
-  }
+  // @Delete(':id/force-delete')
+  // @ApiOkResponse({ type: OkResDto })
+  // @ApiOperation({ summary: 'Permanently delete user by ID' })
+  // async forceDelete(@Param('id') id: number): Promise<OkResDto> {
+  //   this.log.debug(`Force delete user by ID: ${id}`);
+  //   return new OkResDto('User deleted');
+  // }
 }

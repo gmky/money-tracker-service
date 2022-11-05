@@ -30,7 +30,7 @@ export class SubscriptionRepo {
   async filter(
     data: AdminFilterSubcriptionReqDto,
     pageable: Pageable,
-  ): Promise<[total: number, result: Subscription[]]> {
+  ): Promise<[result: Subscription[], total: number]> {
     const query = {
       plan: In(data.plan),
       user: { id: data.userId ? Equal(data.userId) : Not(IsNull()) },
@@ -38,12 +38,13 @@ export class SubscriptionRepo {
       paymentOption: In(data.paymentOption),
     };
 
-    const total = await this.subs.countBy(query);
-    const result = await this.subs.find({
+    return this.subs.findAndCount({
       where: query,
       skip: (pageable.page - 1) * pageable.size,
       take: pageable.size,
+      order: {
+        startAt: 'DESC',
+      },
     });
-    return [total, result];
   }
 }

@@ -99,6 +99,7 @@ export class UserService {
     return this.userRepo.softDelete(id);
   }
 
+  // FIXME: delete all related resources
   async forceDeleteById(id: number): Promise<void> {
     return this.userRepo.forceDelete(id);
   }
@@ -114,7 +115,7 @@ export class UserService {
     data: AdminFilterUserReqDto,
     pageable: Pageable,
   ): Promise<PaginatedResDto<User>> {
-    const [total, result] = await this.userRepo.filter(data, pageable);
+    const [result, total] = await this.userRepo.filter(data, pageable);
     const parsedResult = instanceToPlain(result) as User[];
     return new PaginatedResDto(total, parsedResult, pageable);
   }

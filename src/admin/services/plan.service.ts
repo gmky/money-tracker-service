@@ -20,7 +20,7 @@ export class PlanService {
     data: AdminFilterPlanReqDto,
     pageable: Pageable,
   ): Promise<PaginatedResDto<Plan>> {
-    const [total, result] = await this.planRepo.filter(data, pageable);
+    const [result, total] = await this.planRepo.filter(data, pageable);
     return new PaginatedResDto(
       total,
       instanceToPlain(result) as Plan[],

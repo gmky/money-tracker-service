@@ -1,4 +1,12 @@
-import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOkResponse,
@@ -10,7 +18,7 @@ import { Pageable, PaginatedResDto } from 'src/shared/dto';
 import { UserRoleEnum } from 'src/shared/enum';
 import { str } from 'src/shared/utils';
 import { Subscription } from '../../database/entities';
-import { AdminFilterSubcriptionReqDto } from '../dto/req';
+import { AdminCreateSubReqDto, AdminFilterSubcriptionReqDto } from '../dto/req';
 import { SubscriptionService } from '../services';
 
 @ApiBearerAuth()
@@ -43,5 +51,13 @@ export class SubscriptionController {
   async findById(@Param('id') id: number): Promise<Partial<Subscription>> {
     this.log.debug(`Find subscription by ID: ${id}`);
     return this.subService.findById(id);
+  }
+
+  @Post()
+  async createSub(
+    @Body() body: AdminCreateSubReqDto,
+  ): Promise<Partial<Subscription>> {
+    this.log.debug(`Create subscription with data: ${str(body)}`);
+    return this.subService.createSub(body);
   }
 }
