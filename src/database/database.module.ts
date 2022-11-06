@@ -27,6 +27,7 @@ import subcribers from './subcribers';
           synchronize: true,
           autoLoadEntities: true,
           logging: true,
+          connectorPackage: 'mysql2',
           cache: {
             type: 'redis',
             options: {

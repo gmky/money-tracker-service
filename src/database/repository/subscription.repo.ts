@@ -22,6 +22,34 @@ export class SubscriptionRepo {
     });
   }
 
+  findByIdWithUserAndPlan(id: number): Promise<Subscription> {
+    return this.subs.findOne({
+      select: {
+        user: {
+          id: true,
+          username: true,
+          email: true,
+        },
+        planDetail: {
+          id: true,
+          name: true,
+          monthlyPrice: true,
+          annualPrice: true,
+          lifetimePrice: true,
+          totalCreditWalletLimit: true,
+          totalNormalWalletLimit: true,
+          totalSavingsWalletLimit: true,
+          totalWallets: true,
+        },
+      },
+      where: { id },
+      relations: {
+        user: true,
+        planDetail: true,
+      },
+    });
+  }
+
   save(sub: Subscription, transaction = true): Promise<Subscription> {
     const entity = this.subs.create(sub);
     return this.subs.save(entity, { transaction });

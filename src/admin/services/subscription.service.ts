@@ -29,7 +29,7 @@ export class SubscriptionService {
   }
 
   async findById(id: number): Promise<Partial<Subscription>> {
-    const existed = await this.subRepo.findById(id);
+    const existed = await this.subRepo.findByIdWithUserAndPlan(id);
     if (!existed) throw new NotFoundException('Subscription not found');
     return instanceToPlain(existed);
   }

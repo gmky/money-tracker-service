@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as compression from 'compression';
 import helmet from 'helmet';
@@ -10,7 +11,7 @@ import { ServerConfig } from './shared/config/server.config';
 import { PaginatedResDto } from './shared/dto';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const confService = app.get(ConfigService);
 
@@ -19,6 +20,7 @@ async function bootstrap() {
   app.enableCors(corsConfig);
   app.use(compression());
   app.use(helmet());
+  app.set('etag', 'strong');
 
   app.useGlobalPipes(
     new ValidationPipe({
