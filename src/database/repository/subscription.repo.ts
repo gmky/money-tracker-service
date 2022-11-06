@@ -75,4 +75,8 @@ export class SubscriptionRepo {
       },
     });
   }
+
+  async softDeleteById(id: number): Promise<void> {
+    await this.subs.softDelete({ id });
+  }
 }

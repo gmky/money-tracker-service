@@ -4,7 +4,11 @@ import { Subscription } from 'src/database/entities';
 import { PlanRepo, SubscriptionRepo, UserRepo } from 'src/database/repository';
 import { Pageable, PaginatedResDto } from 'src/shared/dto';
 import { UserRoleEnum, UserStatusEnum } from 'src/shared/enum';
-import { AdminCreateSubReqDto, AdminFilterSubcriptionReqDto } from '../dto/req';
+import {
+  AdminCreateSubReqDto,
+  AdminFilterSubcriptionReqDto,
+  AdminUpdateSubStatusReqDto,
+} from '../dto/req';
 
 @Injectable()
 export class SubscriptionService {
@@ -48,5 +52,19 @@ export class SubscriptionService {
     sub.planDetail = plan;
     sub = await this.subRepo.save(sub);
     return instanceToPlain(sub);
+  }
+
+  async updateStatusById(
+    id: number,
+    data: AdminUpdateSubStatusReqDto,
+  ): Promise<void> {
+    const existed = await this.subRepo.findById(id);
+    if (!existed) throw new NotFoundException('Subscription not found');
+    existed.status = data.status;
+    await this.subRepo.save(existed);
+  }
+
+  async softDeleteById(id: number): Promise<void> {
+    await this.subRepo.softDeleteById(id);
   }
 }

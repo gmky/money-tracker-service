@@ -3,3 +3,4 @@ export * from './filter-user.req.dto';
 export * from './update-user.req.dto';
 export * from './filter-subscription.req.dto';
 export * from './create-sub.req.dto';
+export * from './update-sub-status.req.dto';

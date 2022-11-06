@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Logger,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import {
@@ -14,11 +16,15 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AnyRole, ApiPaginatedResponse } from 'src/shared/decors';
-import { Pageable, PaginatedResDto } from 'src/shared/dto';
+import { OkResDto, Pageable, PaginatedResDto } from 'src/shared/dto';
 import { UserRoleEnum } from 'src/shared/enum';
 import { str } from 'src/shared/utils';
 import { Subscription } from '../../database/entities';
-import { AdminCreateSubReqDto, AdminFilterSubcriptionReqDto } from '../dto/req';
+import {
+  AdminCreateSubReqDto,
+  AdminFilterSubcriptionReqDto,
+  AdminUpdateSubStatusReqDto,
+} from '../dto/req';
 import { SubscriptionService } from '../services';
 
 @ApiBearerAuth()
@@ -54,10 +60,33 @@ export class SubscriptionController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create new subscription for user' })
+  @ApiOkResponse({ type: Subscription })
   async createSub(
     @Body() body: AdminCreateSubReqDto,
   ): Promise<Partial<Subscription>> {
     this.log.debug(`Create subscription with data: ${str(body)}`);
     return this.subService.createSub(body);
+  }
+
+  @Put(':id/status')
+  @ApiOkResponse({ type: OkResDto })
+  @ApiOperation({ summary: 'Update subscription status by ID' })
+  async updateSubscriptionStatus(
+    @Param('id') id: number,
+    @Body() body: AdminUpdateSubStatusReqDto,
+  ): Promise<Partial<OkResDto>> {
+    this.log.debug(`Update subscription status by ID: ${id}`);
+    await this.subService.updateStatusById(id, body);
+    return new OkResDto('Subscription updated');
+  }
+
+  @Delete(':id')
+  @ApiOkResponse({ type: OkResDto })
+  @ApiOperation({ summary: 'Delete subscription by ID' })
+  async deleteById(@Param('id') id: number): Promise<OkResDto> {
+    this.log.debug(`Delete subscription by ID: ${id}`);
+    await this.subService.softDeleteById(id);
+    return new OkResDto('Subscription deleted');
   }
 }
