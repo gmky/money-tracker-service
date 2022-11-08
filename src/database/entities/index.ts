@@ -1,3 +1,4 @@
+import { Category } from './category.entity';
 import { Plan } from './plan.entity';
 import { Subscription } from './subscription.entity';
 import { User } from './user.entity';
@@ -7,5 +8,6 @@ export * from './user.entity';
 export * from './wallet.entity';
 export * from './plan.entity';
 export * from './subscription.entity';
+export * from './category.entity';
 
-export default [User, Wallet, Plan, Subscription];
+export default [User, Wallet, Plan, Subscription, Category];
